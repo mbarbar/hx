@@ -54,6 +54,11 @@ struct history_list {
 struct history_list* history_list_init(void);
 
 /*
+ * Returns the number of entries in list.
+ */
+size_t history_size(struct history_list* list);
+
+/*
  * Adds a `history_entry' to the tail of the list by allocating a new history
  * entry on the heap (deep copy of string), deleting the head if the length is
  * currently HISTORY_SIZE, then setting the pointers in list correctly.

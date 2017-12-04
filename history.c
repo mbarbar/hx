@@ -8,6 +8,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 struct history_list* history_list_init(void) {
 	struct history_list* list = malloc(sizeof(struct history_list));
@@ -24,9 +25,42 @@ struct history_list* history_list_init(void) {
 	return list;
 }
 
+size_t history_size(struct history_list* list) {
+	size_t size = 0;
+	struct history_entry* node = list->head;
+
+	for (; node != NULL; node = node->next) ++size;
+
+	return size;
+}
+
 void history_add(struct history_list* list, char* string) {
-	(void)list;
-	(void)string;
+	struct history_entry *entry = malloc(sizeof(struct history_entry));
+	if (entry == NULL) {
+		perror("Unable to allocate size for struct history_entry");
+		exit(1);
+	}
+
+	entry->prev = list->tail;
+	entry->next= NULL;
+	strncpy(entry->string, string, INPUT_BUF_SIZE);
+
+	if (list->head == NULL) {
+		// Empty list
+		list->head = list->tail = entry;
+	} else {
+		if (history_size(list) == HISTORY_SIZE) {
+			struct history_entry* old_head = list->head;
+			list->head = old_head->next;
+			list->head->prev = NULL;
+			free(old_head);
+		}
+
+		list->tail->next = entry;
+		list->tail = entry;
+	}
+
+	// curr is untouched.
 }
 
 void history_free(struct history_list* list) {
