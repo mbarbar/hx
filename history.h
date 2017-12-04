@@ -4,6 +4,8 @@
  * Copyright (c) 2016 Kevin Pors. See LICENSE for details.
  */
 
+#include "editor.h"  // for INPUT_BUF_SIZE.
+
 #ifndef HX_HISTORY_H
 #define HX_HISTORY_H
 
@@ -29,7 +31,7 @@ struct history_entry {
 	struct history_entry* prev;  // Previous history entry or NULL if first.
 	struct history_entry* next;  // Next history entry or NULL if last.
 
-	char* string;  // Command or search string.
+	char string[INPUT_BUF_SIZE];  // Command or search string.
 };
 
 /*
