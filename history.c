@@ -91,16 +91,26 @@ void history_print(struct history_list* list) {
 }
 
 void history_move(struct history_list* list, int direction) {
-	(void)list;
-	(void)direction;
+	if (direction == 1) {
+		if (list->curr != NULL) list->curr = list->curr->next;
+	} else if (direction == -1) {
+		if (list->curr == NULL) list->curr = list->tail;
+		else {
+			if (list->curr != list->head) {
+				list->curr = list->curr->prev;
+			}
+		}
+	} else {
+		// direction == 0 - do nothing.
+	}
 }
 
 void history_get_curr(struct history_list* list, char* string) {
-	(void)list;
-	(void)string;
+	if (list->curr == NULL) string[0] = '\0';
+	else strncpy(string, list->curr->string, INPUT_BUF_SIZE);
 }
 
 void history_reset_curr(struct history_list* list) {
-	(void)list;
+	list->curr = NULL;
 }
 
